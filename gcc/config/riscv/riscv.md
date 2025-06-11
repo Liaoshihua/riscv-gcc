@@ -717,7 +717,7 @@
 		 (match_operand:SI 2 "arith_operand"    " r,I")))]
   ""
 {
-  if (TARGET_64BIT)
+  if (TARGET_64BIT && !REG_P(operands[1]))
     {
       rtx t = gen_reg_rtx (DImode);
       emit_insn (gen_addsi3_extended (t, operands[1], operands[2]));
@@ -3921,6 +3921,10 @@
   "reload_completed"
   [(const_int 0)]
 {
+  if (GET_MODE (operands[0]) != Pmode)
+    operands[0] = convert_to_mode (Pmode, operands[0], 0);  
+  if (GET_MODE (operands[1]) != Pmode)
+    operands[1] = convert_to_mode (Pmode, operands[1], 0);
   riscv_set_return_address (operands[0], operands[1]);
   DONE;
 })
@@ -4175,8 +4179,8 @@
 
 (define_insn "stack_tie<mode>"
   [(set (mem:BLK (scratch))
-	(unspec:BLK [(match_operand:X 0 "register_operand" "r")
-		     (match_operand:X 1 "register_operand" "r")]
+	(unspec:BLK [(match_operand:P 0 "register_operand" "r")
+		     (match_operand:P 1 "register_operand" "r")]
 		    UNSPEC_TIE))]
   "!rtx_equal_p (operands[0], operands[1])"
   ""
@@ -4370,7 +4374,7 @@
    (set_attr "length" "12")])
 
 (define_insn "riscv_clean_<mode>"
-  [(unspec_volatile:X [(match_operand:X 0 "register_operand" "r")]
+  [(unspec_volatile:P [(match_operand:P 0 "register_operand" "r")]
     UNSPECV_CLEAN)]
   "TARGET_ZICBOM"
   "cbo.clean\t%a0"
@@ -4378,7 +4382,7 @@
 )
 
 (define_insn "riscv_flush_<mode>"
-  [(unspec_volatile:X [(match_operand:X 0 "register_operand" "r")]
+  [(unspec_volatile:P [(match_operand:P 0 "register_operand" "r")]
     UNSPECV_FLUSH)]
   "TARGET_ZICBOM"
   "cbo.flush\t%a0"
@@ -4386,7 +4390,7 @@
 )
 
 (define_insn "riscv_inval_<mode>"
-  [(unspec_volatile:X [(match_operand:X 0 "register_operand" "r")]
+  [(unspec_volatile:P [(match_operand:P 0 "register_operand" "r")]
     UNSPECV_INVAL)]
   "TARGET_ZICBOM"
   "cbo.inval\t%a0"
@@ -4394,7 +4398,7 @@
 )
 
 (define_insn "riscv_zero_<mode>"
-  [(unspec_volatile:X [(match_operand:X 0 "register_operand" "r")]
+  [(unspec_volatile:P [(match_operand:P 0 "register_operand" "r")]
     UNSPECV_ZERO)]
   "TARGET_ZICBOZ"
   "cbo.zero\t%a0"
@@ -4422,8 +4426,8 @@
 				      (const_string "4")))])
 
 (define_insn "riscv_prefetchi_<mode>"
-  [(unspec_volatile:X [(match_operand:X 0 "address_operand" "r")
-              (match_operand:X 1 "imm5_operand" "i")]
+  [(unspec_volatile:P [(match_operand:P 0 "address_operand" "r")
+              (match_operand:P 1 "imm5_operand" "i")]
               UNSPECV_PREI)]
   "TARGET_ZICBOP"
   "prefetch.i\t%a0"

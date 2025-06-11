@@ -163,6 +163,10 @@ ASM_MISA_SPEC
 #define MIN_UNITS_PER_WORD 4
 #endif
 
+#ifndef TARGET_ILP32
+#define TARGET_ILP32           (riscv_abi <= ABI_ILP32D)
+#endif /*TARGET_ILP32*/
+
 /* Allows SImode op in builtin overflow pattern, see internal-fn.cc.  */
 #undef TARGET_MIN_ARITHMETIC_PRECISION
 #define TARGET_MIN_ARITHMETIC_PRECISION riscv_min_arithmetic_precision
@@ -927,7 +931,7 @@ extern enum riscv_cc get_riscv_cc (const rtx use);
    After generation of rtl, the compiler makes no further distinction
    between pointers and any other objects of this machine mode.  */
 
-#define Pmode word_mode
+#define Pmode (TARGET_ILP32 ? SImode : DImode)
 
 /* Specify the machine mode that registers have.  */
 
@@ -1210,6 +1214,10 @@ extern bool need_shadow_stack_push_pop_p ();
 #define XLEN_SPEC \
   "%{march=rv32*:32}" \
   "%{march=rv64*:64}" \
+
+#define ABI_LEN_SPEC \
+  "%{mabi=ilp32*:32}" \
+  "%{mabi=lp64*:64}" \
 
 #define ABI_SPEC \
   "%{mabi=ilp32:ilp32}" \

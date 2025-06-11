@@ -1,6 +1,6 @@
 /* { dg-do compile { target { ! riscv_abi_e } } } */
 /* { dg-require-effective-target rv64 } */
-/* { dg-options "-march=rv64gc" } */
+/* { dg-options "-march=rv64gc -mabi=lp64d" } */
 /* { dg-skip-if "" { *-*-* } {"-O0" "-Os" "-Og" "-Oz" "-flto" } } */
 
 #include "extend-shift-helpers.h"

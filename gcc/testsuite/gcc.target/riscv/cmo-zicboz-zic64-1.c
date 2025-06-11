@@ -1,6 +1,6 @@
 /* { dg-do compile { target { ! riscv_abi_e } } } */
-/* { dg-options "-march=rv32gc_zic64b_zicboz" { target { rv32 } } } */
-/* { dg-options "-march=rv64gc_zic64b_zicboz" { target { rv64 } } } */
+/* { dg-options "-march=rv32gc_zic64b_zicboz  -mabi=ilp32d" { target { rv32 } } } */
+/* { dg-options "-march=rv64gc_zic64b_zicboz -mabi=lp64d" { target { rv64 } } } */
 /* { dg-skip-if "" { *-*-* } {"-O0" "-Os" "-Og" "-Oz" "-flto" } } */
 
 // 1x cbo.zero, 7x sd (rv64) or 14x sw (rv32), 1x sh, 1x sb

@@ -1,6 +1,6 @@
 /* { dg-do compile { target { ! riscv_abi_e } } } */
-/* { dg-options "-march=rv32gc" { target { rv32 } } } */
-/* { dg-options "-march=rv64gc" { target { rv64 } } } */
+/* { dg-options "-march=rv32gc  -mabi=ilp32d" { target { rv32 } } } */
+/* { dg-options "-march=rv64gc  -mabi=lp64d" { target { rv64 } } } */
 /* { dg-skip-if "" { *-*-* } {"-O0" "-O1" "-Os" "-Og" "-Oz" "-flto" } } */
 
 // Tests for merging rshifts into sero-extensions.

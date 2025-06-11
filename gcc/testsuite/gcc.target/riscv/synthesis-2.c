@@ -5,7 +5,7 @@
    and eliminates the usual sources of extraneous dead code that would throw
    off the counts.  */
 /* { dg-skip-if "" { *-*-* } { "-O0" "-Og" "-O2" "-O3" "-Os" "-Oz" "-flto" } } */
-/* { dg-options "-march=rv64gcb" } */
+/* { dg-options "-march=rv64gcb -mabi=lp64d" } */
 
 /* All these cases have the same form.  lui+slli.uw+addi
 /* { dg-final { scan-assembler-times "\\tadd" 367 } } */
