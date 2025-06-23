@@ -717,7 +717,7 @@
 		 (match_operand:SI 2 "arith_operand"    " r,I")))]
   ""
 {
-  if (TARGET_64BIT && !REG_P(operands[1]))
+  if (TARGET_64BIT && !(TARGET_ILP32 && REG_P(operands[1])))
     {
       rtx t = gen_reg_rtx (DImode);
       emit_insn (gen_addsi3_extended (t, operands[1], operands[2]));
@@ -957,7 +957,7 @@
                  (match_operand:SI 2 "register_operand" "  r")))]
   ""
 {
-  if (TARGET_64BIT)
+  if (TARGET_64BIT && !(TARGET_ILP32 && REG_P(operands[1])))
     {
       rtx t = gen_reg_rtx (DImode);
       emit_insn (gen_subsi3_extended (t, operands[1], operands[2]));
@@ -3703,6 +3703,15 @@
   "slt%i2<u>\t%0,%1,%2"
   [(set_attr "type" "slt")
    (set_attr "mode" "<X:MODE>")])
+
+(define_insn "@slt<u>_<P:mode><GPR:mode>3_rv64ilp32"
+  [(set (match_operand:GPR           0 "register_operand" "= r")
+	(any_lt:GPR (match_operand:P 1 "register_operand" "  r")
+		    (match_operand:P 2 "arith_operand"    " rI")))]
+  "TARGET_ILP32 && TARGET_64BIT"
+  "slt%i2<u>\t%0,%1,%2"
+  [(set_attr "type" "slt")
+   (set_attr "mode" "<P:MODE>")])
 
 (define_insn "*sle<u>_<X:mode><GPR:mode>"
   [(set (match_operand:GPR           0 "register_operand" "=r")

@@ -384,9 +384,9 @@ th_mempair_prepare_save_restore_operands (rtx operands[4],
   int reg_op = load_p ? 0 : 1;
   int mem_op = load_p ? 1 : 0;
 
-  rtx mem1 = plus_constant (mode, stack_pointer_rtx, offset);
+  rtx mem1 = plus_constant (Pmode, stack_pointer_rtx, offset);
   mem1 = gen_frame_mem (mode, mem1);
-  rtx mem2 = plus_constant (mode, stack_pointer_rtx, offset2);
+  rtx mem2 = plus_constant (Pmode, stack_pointer_rtx, offset2);
   mem2 = gen_frame_mem (mode, mem2);
 
   operands[reg_op] = gen_rtx_REG (mode, regno);

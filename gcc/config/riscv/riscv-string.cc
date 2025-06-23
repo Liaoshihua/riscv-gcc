@@ -1721,8 +1721,8 @@ expand_vec_cmpmem (rtx result_out, rtx blk_a_in, rtx blk_b_in, rtx length_in)
 
   /* Mismatch_ofs is -1 if blocks match, or the offset of
      the first mismatch otherwise.  */
-  rtx ltz = gen_reg_rtx (Xmode);
-  emit_insn (gen_slt_3 (LT, Xmode, Xmode, ltz, mismatch_ofs, const0_rtx));
+  rtx ltz = gen_reg_rtx (Pmode);
+  emit_insn (gen_slt_3 (LT, Pmode, Pmode, ltz, mismatch_ofs, const0_rtx));
   /* mismatch_ofs += (mismatch_ofs < 0) ? 1 : 0.  */
   emit_insn (
       gen_rtx_SET (mismatch_ofs, gen_rtx_PLUS (Pmode, mismatch_ofs, ltz)));
