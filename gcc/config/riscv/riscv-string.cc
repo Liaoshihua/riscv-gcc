@@ -594,8 +594,8 @@ riscv_expand_strlen_scalar (rtx result, rtx src, rtx align)
     }
 
   do_lshr3 (zeros, zeros, GEN_INT (exact_log2 (BITS_PER_UNIT)));
-  do_add3 (addr, addr, zeros);
-  do_sub3 (result, addr, addr_plus_regsz);
+  emit_insn (gen_add3_insn (addr, addr, zeros));
+  emit_insn (gen_sub3_insn(result, addr, addr_plus_regsz));
 
   return true;
 }
